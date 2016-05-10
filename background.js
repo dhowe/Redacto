@@ -11,7 +11,7 @@ chrome.runtime.onMessage.addListener(function (req, src, callback) {
 
     setTimeout(function () {
       delete disabled[req.tabId];
-    }, 10000); // remove after 10 seconds
+  }, 5000); // remove after 5 seconds
 
     chrome.tabs.reload(req.tabId);
 

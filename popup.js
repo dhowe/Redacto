@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', function () {
     chrome.tabs.sendMessage(tabs[0].id, {
       what: "isActive"
     }, function (res) {
-        console.log("p.recv: ",res);
       updateButton(button, tabs[0].id, !res || res.active);
     });
   });

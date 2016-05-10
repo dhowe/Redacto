@@ -1,7 +1,7 @@
 chrome.runtime.onMessage.addListener(
   function (message, sender, callback) {
     if (message.what === "isActive")
-    console.log("cs-send", 'active:'+(document.querySelector('#rd_style') != null));
+      //console.log("cs-send", 'active:'+(document.querySelector('#rd_style')!=null));
       callback({
         'active': (document.querySelector('#rd_style') != null)
       });
@@ -11,7 +11,7 @@ chrome.runtime.sendMessage({
   what: "check"
 }, function (res) {
 
-  console.log('Redacto: ' + (res.active ? 'active' : 'inactive'));
+  //console.log('Redacto: ' + (res.active ? 'active' : 'inactive'));
 
   if (res.active) {
 
