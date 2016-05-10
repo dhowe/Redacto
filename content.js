@@ -1,8 +1,9 @@
 chrome.runtime.onMessage.addListener(
   function (message, sender, callback) {
     if (message.what === "isActive")
+    console.log("cs-send", 'active:'+(document.querySelector('#rd_style') != null));
       callback({
-        'active': document.querySelector('#rd_style') != null
+        'active': (document.querySelector('#rd_style') != null)
       });
   });
 

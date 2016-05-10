@@ -16,8 +16,8 @@ document.addEventListener('DOMContentLoaded', function () {
     chrome.tabs.sendMessage(tabs[0].id, {
       what: "isActive"
     }, function (res) {
-
-      updateButton(button, tabs[0].id, res.active);
+        console.log("p.recv: ",res);
+      updateButton(button, tabs[0].id, !res || res.active);
     });
   });
 });
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
 function updateButton(button, tabId, on) {
 
   button.disabled = !on;
-  button.innerHTML = (on ? 'Disable' : 'Disabled') + ' on this page';
+  button.innerHTML = (on ? 'Disable on this page' : 'Disabled');
 
   on && button.addEventListener('click', function () {
 

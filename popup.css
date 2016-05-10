@@ -1,8 +1,12 @@
+
 body {
-  background-image: none !important;
+    background-color: #EBC502;
+    color: #555;
 }
-h3 {
-  width: 60px !important;
-  height: 34px !important;
-  margin-bottom: 20px !important;
+img {
+  margin: 0px 2px 4px 2px;
+}
+
+button {
+  width: 60px
 }
