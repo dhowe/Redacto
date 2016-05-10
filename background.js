@@ -2,28 +2,24 @@ var disabled = {};
 
 chrome.runtime.onMessage.addListener(function (req, src, callback) {
 
-  console.log("msg:", req.what, src.tab);
+  //console.log("msg:", req.what, src.tab);
 
-  if (req.what === "check") {
+  if (req.what === "refresh" && req.tabId) { // from popup
 
-    var tabId = (src.tab && src.tab.id) || req.tabId;
-    sendState(tabId, callback);
+    // add to disabled-tabId table
+    disabled[req.tabId] = true;
 
-  } else if (req.what === "refresh" && req.tabId) {
-
-    disabled[req.tabId] = +new Date();
-    console.log("Disabled tab: ", req.tabId, disabled);
     setTimeout(function () {
       delete disabled[req.tabId];
-    }, 3000);
+    }, 10000); // remove after 10 seconds
+
     chrome.tabs.reload(req.tabId);
+
+  } else if (req.what === "check") { // from content_script
+
+    //var tabId = (src.tab && src.tab.id) || req.tabId;
+    callback({
+      "active": (typeof disabled[src.tab.id] === 'undefined')
+    });
   }
 });
-
-function sendState(tabId, callback) {
-  var active = (typeof disabled[tabId] === 'undefined');
-  //console.log('check: ', tabId, active, disabled);
-  callback({
-    "active": active
-  });
-}

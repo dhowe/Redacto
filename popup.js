@@ -1,44 +1,40 @@
-// called when our popup is loaded
 document.addEventListener('DOMContentLoaded', function () {
 
   var button = document.querySelector('#rd_button');
 
-  // find the active chrome tab
-  chrome.tabs.getSelected(null, function (tab) {
+  chrome.tabs.query({
+    active: true,
+    currentWindow: true
 
-    if (/^chrome:/.test(tab.url))
-      return updateButton(button, tab.id, 0);
+  }, function (tabs) {
 
-    // check if we are active on the page
-    chrome.runtime.sendMessage({
+    // ignore chrome urls
+    if (/^chrome:/.test(tabs[0].url))
+      return updateButton(button, 0, 0);
 
-      what: "check",
-      tabId: tab.id
-
+    // ask content-script if we are active
+    chrome.tabs.sendMessage(tabs[0].id, {
+      what: "isActive"
     }, function (res) {
 
-      updateButton(button, tab.id, res.active);
+      updateButton(button, tabs[0].id, res.active);
     });
   });
+});
 
-}); // end addEventListener
-
+// enable the button if we are active
 function updateButton(button, tabId, on) {
 
-  button.innerHTML = (on ? 'Disable' : 'Disabled') + ' on this page';
   button.disabled = !on;
+  button.innerHTML = (on ? 'Disable' : 'Disabled') + ' on this page';
 
-  if (on) {
+  on && button.addEventListener('click', function () {
 
-    button.addEventListener('click', function () {
-
-      chrome.runtime.sendMessage({
-        what: "refresh",
-        tabId: tabId
-      });
-
-      window.close();
+    chrome.runtime.sendMessage({
+      what: "refresh",
+      tabId: tabId
     });
-  }
 
-} // end updateButton
+    window.close();
+  });
+}
