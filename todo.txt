@@ -1,0 +1,2 @@
+pref: redact-images
+permanent white-listing
